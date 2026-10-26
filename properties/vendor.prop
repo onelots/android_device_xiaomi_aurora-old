@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+
+# Fingerprint (optical under-display, FOD)
+ro.hardware.fp.fod=true
+ro.hardware.fp.fod.touch.ctl.version=2.0
+persist.vendor.sys.fp.fod.location.X_Y=597,2406
+persist.vendor.sys.fp.fod.size.width_height=246,246
+
+# Touch
+ro.vendor.touchfeature.type=183
