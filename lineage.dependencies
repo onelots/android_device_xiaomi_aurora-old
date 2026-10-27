@@ -4,6 +4,10 @@
     "target_path": "device/xiaomi/sm8650-common"
   },
   {
+    "repository": "device_xiaomi_aurora-kernel",
+    "target_path": "device/xiaomi/aurora-kernel"
+  },
+  {
     "repository": "android_kernel_xiaomi_sm8650",
     "target_path": "kernel/xiaomi/sm8650"
   },
