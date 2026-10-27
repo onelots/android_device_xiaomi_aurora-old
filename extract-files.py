@@ -12,6 +12,10 @@ from extract_utils.fixups_blob import (
     blob_fixup,
     blob_fixups_user_type,
 )
+from extract_utils.fixups_lib import (
+    lib_fixups,
+    lib_fixups_user_type,
+)
 
 namespace_imports = [
     'device/xiaomi/sm8650-common',
@@ -20,6 +24,18 @@ namespace_imports = [
     'hardware/xiaomi',
     'vendor/qcom/opensource/commonsys-intf/display',
 ]
+
+def lib_fixup_odm_suffix(lib: str, partition: str, *args, **kwargs):
+    return f'{lib}_{partition}' if partition == 'odm' else None
+
+
+lib_fixups: lib_fixups_user_type = {
+    **lib_fixups,
+    (
+        'sqlite3',
+        'libqshcamera',
+    ): lib_fixup_odm_suffix,
+}
 
 # Camera blobs link against the old graphics.allocator-V1; realign to V2.
 _graphics_allocator_v1_blobs = (
@@ -79,7 +95,6 @@ _graphics_allocator_v1_blobs = (
     'odm/lib64/com.qti.camx.chiiqutils.so',
     'odm/lib64/com.qti.chiusecaseselector.so',
     'odm/lib64/com.qti.feature2.afbrckt.so',
-    'odm/lib64/com.qti.feature2.anchorsync.so',
     'odm/lib64/com.qti.feature2.demux.so',
     'odm/lib64/com.qti.feature2.derivedoffline.so',
     'odm/lib64/com.qti.feature2.fusion.so',
@@ -146,6 +161,13 @@ _graphics_allocator_v1_blobs = (
 )
 
 blob_fixups: blob_fixups_user_type = {
+    (
+        'odm/etc/camera/enhance_motiontuning.xml',
+        'odm/etc/camera/motiontuning.xml',
+        'odm/etc/camera/night_enhance_motiontuning.xml',
+        'odm/etc/camera/night_motiontuning.xml',
+    ): blob_fixup()
+        .regex_replace('xml=version', 'xml version'),
     'odm/bin/hw/vendor.xiaomi.hardware.vibratorfeature.service': blob_fixup()
         .replace_needed(
             'android.hardware.vibrator-V1-ndk_platform.so',
@@ -160,19 +182,78 @@ blob_fixups: blob_fixups_user_type = {
             'android.hardware.biometrics.fingerprint-V3-ndk.so',
             'android.hardware.biometrics.fingerprint-V4-ndk.so',
         ),
-    'vendor/lib64/camera.device-external-impl.so': blob_fixup()
+    (
+        'vendor/lib64/vendor.xiaomi.hardware.camera.injection-V1-ndk.so',
+        'vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so',
+        'vendor/lib64/vendor.xiaomi.hardware.camera.injection-service.so',
+    ): blob_fixup()
         .replace_needed(
-            'android.hardware.graphics.allocator-V1-ndk.so',
-            'android.hardware.graphics.allocator-V2-ndk.so',
-        )
-        .replace_needed(
-            'android.hardware.graphics.common-V4-ndk.so',
-            'android.hardware.graphics.common-V7-ndk.so',
+            'android.hardware.camera.device-V1-ndk.so',
+            'android.hardware.camera.device-V2-ndk.so',
         ),
     _graphics_allocator_v1_blobs: blob_fixup()
         .replace_needed(
             'android.hardware.graphics.allocator-V1-ndk.so',
             'android.hardware.graphics.allocator-V2-ndk.so',
+        ),
+    (
+        'odm/lib64/libAncHumanVideoBokehV4.so',
+        'odm/lib64/libTrueSight.so',
+        'odm/lib64/libMiPhotoFilter.so',
+        'odm/lib64/libwa_widelens_undistort.so',
+        'odm/lib64/libmorpho_ubwc.so'
+    ): blob_fixup()
+        .clear_symbol_version('AHardwareBuffer_allocate')
+        .clear_symbol_version('AHardwareBuffer_describe')
+        .clear_symbol_version('AHardwareBuffer_isSupported')
+        .clear_symbol_version('AHardwareBuffer_lock')
+        .clear_symbol_version('AHardwareBuffer_lockPlanes')
+        .clear_symbol_version('AHardwareBuffer_release')
+        .clear_symbol_version('AHardwareBuffer_unlock'),
+    (
+        'odm/lib64/hw/camera.qcom.so',
+        'odm/lib64/hw/com.qti.chi.override.so',
+        'odm/lib64/libchifeature2.so',
+        'odm/lib64/libcamxcommonutils.so',
+        'odm/lib64/libmialgoengine.so',
+        'vendor/lib64/libcameraopt.so',
+    ): blob_fixup()
+        .add_needed('libprocessgroup_shim.so'),
+    'odm/lib64/com.qti.feature2.anchorsync.so': blob_fixup()
+        .replace_needed(
+            'android.hardware.graphics.allocator-V1-ndk.so',
+            'android.hardware.graphics.allocator-V2-ndk.so',
+        )
+        .replace_needed(
+            'libtinyxml2.so',
+            'libtinyxml2-v34.so',
+        ),
+    (
+        'odm/bin/hw/vendor.xiaomi.sensor.tofsensorservice.aidl',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.anchor.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.mialgoaiur.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.mialgosnsc.so',
+    ): blob_fixup()
+        .replace_needed(
+            'libtinyxml2.so',
+            'libtinyxml2-v34.so',
+        ),
+    (
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.gainmap.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.jpegrAggr.so',
+    ): blob_fixup()
+        .replace_needed(
+            'libultrahdr.so',
+            'libultrahdr_prebuilt.so',
+        ),
+    'vendor/lib64/libultrahdr_prebuilt.so': blob_fixup()
+        .replace_needed(
+            'libjpegdecoder.so',
+            'libjpegdecoder_prebuilt.so',
+        )
+        .replace_needed(
+            'libjpegencoder.so',
+            'libjpegencoder_prebuilt.so',
         ),
 }
 
@@ -180,6 +261,7 @@ module = ExtractUtilsModule(
     'aurora',
     'xiaomi',
     blob_fixups=blob_fixups,
+    lib_fixups=lib_fixups,
     namespace_imports=namespace_imports,
     check_elf=True,
 )

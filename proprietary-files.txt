@@ -88,8 +88,6 @@ odm/bin/ispv4_sensor_ctl
 odm/bin/ispv4_setpcie_speed
 odm/bin/ispv4_spi_rw
 odm/bin/ispv4_spi_st
-odm/bin/ispv4_utils_lspci
-odm/bin/ispv4_utils_setpci
 odm/bin/ispv4_utils_xxd
 odm/bin/test-aon
 odm/etc/camera/CFR_para_T_2x_V01.bin
@@ -1468,7 +1466,7 @@ odm/lib64/libofflinefeatureintf.so
 odm/lib64/libopestriping.so
 odm/lib64/libportrait_repair_qnn.so
 odm/lib64/libqimagebuffer.so
-odm/lib64/libqshcamera.so
+odm/lib64/libqshcamera.so;MODULE_SUFFIX=_odm
 odm/lib64/librawnrv2_shared.so
 odm/lib64/libsupermoon.so
 odm/lib64/libswregistrationalgo.so
@@ -1483,12 +1481,12 @@ odm/lib64/vendor.qti.hardware.camera.offlinecamera-service-impl.so
 odm/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so
 vendor/etc/camera/cameraopt_perf.json
 vendor/etc/camera/cameraopt_vendor.json
-vendor/lib64/camera.device-external-impl.so
-vendor/lib64/libcamera2ndk_vendor.so
 vendor/lib64/libcameraopt.so
+vendor/lib64/libjpegencoder.so:vendor/lib64/libjpegencoder_prebuilt.so;FIX_SONAME
 vendor/lib64/libmialgo.so
 vendor/lib64/libmifaceempty.so
 vendor/lib64/libmisr.so
+vendor/lib64/libultrahdr.so:vendor/lib64/libultrahdr_prebuilt.so;FIX_SONAME
 vendor/lib64/vendor.xiaomi.hardware.aon-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.camera.injection-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so
@@ -1521,8 +1519,8 @@ odm/lib64/libQnnHtpPrepare.so
 odm/lib64/libSEGModel.so
 odm/lib64/libSEGModelPriv.so
 odm/lib64/libSNPE.so
-odm/lib64/libSnpeDspV66Stub.so
-odm/lib64/libSnpeHta.so
+odm/lib64/libSnpeDspV66Stub.so;FIX_SONAME
+odm/lib64/libSnpeHta.so;FIX_SONAME
 odm/lib64/libSnpeHtpPrepare.so
 odm/lib64/libSnpeHtpV68Stub.so
 odm/lib64/libSnpeHtpV69Stub.so
@@ -1531,8 +1529,8 @@ odm/lib64/libSnpeHtpV75Stub.so
 odm/lib64/libarcsoft_qnnhtp.so
 odm/lib64/libbitmlengine.so
 odm/lib64/libbitmlenginev2.so
-odm/lib64/libcalculator.so
-odm/lib64/libcalculator_htp.so
+odm/lib64/libcalculator.so;FIX_SONAME
+odm/lib64/libcalculator_htp.so;FIX_SONAME
 odm/lib64/libceres.so
 odm/lib64/libellv.so
 odm/lib64/libhta_hexagon_runtime_snpe.so
@@ -1545,7 +1543,7 @@ odm/lib64/libqll.so
 odm/lib64/libqll10.so
 odm/lib64/libqllengine.so
 odm/lib64/libqsegnet.so
-odm/lib64/libsnpe_config.so
+odm/lib64/libsnpe_config.so;DISABLE_CHECKELF
 vendor/lib64/libRecordCNN.so
 vendor/lib64/libSNPESample.so
 vendor/lib64/libopencl_loader.so
@@ -1708,7 +1706,6 @@ odm/lib64/se_algo/libQnnHtpV75Skel.so
 
 # Sensors
 odm/bin/hw/vendor.xiaomi.sensor.tofsensorservice.aidl
-odm/bin/test-nusensors
 odm/etc/sensors/config/ak991x_dri_0.json
 odm/etc/sensors/config/json.lst
 odm/etc/sensors/config/lanai_qsh_ble_0.json
@@ -2079,7 +2076,7 @@ odm/firmware/92_notificationRemove_P_RTP.bin
 odm/firmware/93_notificationCleanall_P_RTP.bin
 odm/firmware/99_POCO_P_RTP.bin
 odm/firmware/9_ringTone4_P_RTP.bin
-odm/lib64/libmihapticv1.so
+odm/lib64/libmihapticv1.so;FIX_SONAME
 vendor/lib64/vendor.hardware.vibratorfeature.IVibratorExt-V1-ndk_platform.so
 
 # Video
@@ -2129,7 +2126,7 @@ odm/lib64/vendor.xiaomi.hardware.cstransfer-V1-ndk.so
 odm/lib64/vendor.xiaomi.hardware.misauth-V1-ndk_platform.so
 odm/lib64/vendor.xiaomi.hardware.mrm-V1-ndk_platform.so
 odm/lib64/vendor.xiaomi.hardware.satellite-V1-ndk_platform.so
-vendor/lib64/libmidebuggerdimpl_vendor.so
+vendor/lib64/libmidebuggerdimpl_vendor.so;DISABLE_CHECKELF
 vendor/lib64/libmilut.so
 vendor/lib64/libmips.so
 vendor/lib64/libmiracast.so
@@ -2138,11 +2135,8 @@ vendor/lib64/vendor.qti.hardware.sigma_miracast@1.0.so
 vendor/lib64/vendor.xiaomi.hardware.seccam-V1-ndk.so
 
 # Misc
-odm/bin/cstool
 odm/bin/hw/android.hardware.weaver-service.nxp-qti
 odm/bin/l8_hal_test
-odm/etc/NOTICE.xml.gz
-odm/etc/NOTICE_GPL.html.gz
 odm/etc/cit_param_config.json
 odm/etc/default_cloud.json
 odm/etc/device_info_qr_config.yml
@@ -2158,5 +2152,6 @@ odm/lib64/libc++_shared.so
 odm/lib64/libfastmessage.so
 odm/lib64/librfs_warp.so
 odm/lib64/libshadowhook.so
-odm/lib64/sqlite3.so
+odm/lib64/sqlite3.so;MODULE_SUFFIX=_odm
 odm/lib64/vendor.qti.qvirt-V1-ndk.so
+vendor/lib64/libjpegdecoder.so:vendor/lib64/libjpegdecoder_prebuilt.so;FIX_SONAME
